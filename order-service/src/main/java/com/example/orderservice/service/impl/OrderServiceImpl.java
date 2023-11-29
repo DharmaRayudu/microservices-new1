@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void placeOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) {
 
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
@@ -51,11 +51,11 @@ public class OrderServiceImpl implements OrderService {
         boolean results=  Arrays.stream(inventoryResponses).anyMatch(InventoryResponse::isInStock);
         if(results){
             orderRepository.save(order);
+            log.info("Data Saved placeOrder()");
+            return "Order Placed";
         }else{
             throw  new IllegalArgumentException("Product is not in stock, please try after sometime.");
         }
-
-        log.info("Data Saved placeOrder()");
     }
 
     @Override
